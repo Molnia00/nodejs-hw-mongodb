@@ -1,3 +1,7 @@
 import { setupServer } from "./server.js";
 
-setupServer()
+async function startApp() {
+    await setupServer(); 
+}
+
+startApp();

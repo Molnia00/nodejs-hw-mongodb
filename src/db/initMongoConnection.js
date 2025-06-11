@@ -1,21 +1,22 @@
-import mongoose from "mongoose";
 
+// src/db/initMongoDB.jsdcmklsdjnbhgvfctdrxsezxdrcftvgybuhijkomjihugyesdrftgyhujikojihugyftdrsedrfgvybhnjimk,mjnhbgvftcdrxes
 
-import { getEnvVar } from "../utils/getEnvVar";
+import mongoose from 'mongoose';
 
+import { getEnvVar } from '../utils/getEnvVar.js';
 
+export const initMongoConnection = async () => {
+  try {
+    const user = getEnvVar('MONGODB_USER');
+    const pwd = getEnvVar('MONGODB_PASSWORD');
+    const url = getEnvVar('MONGODB_URL');
+    const db = getEnvVar('MONGODB_DB');
 
-function initMongoConnection() {
-    return mongoose.connect(getEnvVar('MONGODB_URL'))
-    .then(() => {
-      console.log("Mongo connection successfully established!");
-    })
-    .catch((error) => {
-        console.error("Error connecting to Mongo:", error);
-        throw error
-    }); 
-    
-}
-export { initMongoConnection }
- 
-//z
+    await mongoose.connect(
+      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`,
+    );
+  } catch (e) {
+    console.log('Error while setting up mongo connection', e);
+    throw e;
+  }
+};
