@@ -5,6 +5,7 @@ import cors from 'cors';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
 import { Contact } from './models/contact.js';
+import { getAllContacts, getAllContactsByID } from './services/conFunc.js';
 
 const PORT = Number(getEnvVar('PORT', '8080'));
 
@@ -43,11 +44,11 @@ export async function setupServer() {
     
   app.get('/contacts', async (req, res, next) => {
     try {
-      const contacts = await Contact.find();
+        const contact = await getAllContacts();
       res.status(200).json({
         status: 200,
         message: "Successfully found contacts!",
-        data: contacts,
+        data: contact,
       });
     } catch (err) {
       next(err);
@@ -57,7 +58,7 @@ export async function setupServer() {
   app.get('/contacts/:id', async (req, res, next) => {
     try {
       const contactId = req.params.id;
-      const contact = await Contact.findById(contactId);
+      const contact = await getAllContactsByID(contactId);
 
       console.log(`Запит на /contacts/${contactId} отримано. Знайдено контакт:`, !!contact);
 
@@ -65,7 +66,8 @@ export async function setupServer() {
         return res.status(404).json({ message: 'Contact not found' });
       }
 
-      res.status(200).json({
+        res.status(200).json({
+          status: 200,
         message: "Successfully found contact!",
         data: contact
       });
