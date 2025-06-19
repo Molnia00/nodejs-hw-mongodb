@@ -1,4 +1,4 @@
-import createHttpError from "http-errors";
+import createHttpError from 'http-errors';
 import { notFoundHandler } from "../middlewares/notFoundHandler.js";
 import { deleteContById, getAllContacts, getAllContactsByID, makeNewCont, changeContById } from "../services/conFunc.js";
 
@@ -37,7 +37,7 @@ async function deleteContByIdControl (req, res){
        const result = await deleteContById(contactId);
  
     if (result === null) {
-         throw new createHttpError.NotFound('student not find')
+         throw new createHttpError.NotFound('student not found')
        }
          res.status(200).json({
            status: 200,

@@ -6,6 +6,7 @@ import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
 import router from './routers/contacts.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const PORT = Number(getEnvVar('PORT', '8080'));
 
@@ -33,7 +34,8 @@ export async function setupServer() {
 
 
   app.use('/', router);
-  app.use(notFoundHandler)
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
   
 
