@@ -8,6 +8,6 @@ export function isValidId(req, res, next) {
         return next(createHttpError.BadRequest('Id should be odjectId!'));
         
     }
-
+    next()
     
 }
