@@ -2,7 +2,6 @@ import express from 'express';
 import { getAllContacts, getAllContactsByID } from '../services/conFunc.js';
 import { getContactController, getContByIdControl , deleteContByIdControl, makeNewContControl, changeContByIdControl} from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-   
 const router = express.Router();
 
 const parseExpres = express.json();
@@ -19,7 +18,7 @@ router.get('/', (req, res) => {
 
 router.delete('/contacts/:id', ctrlWrapper(deleteContByIdControl));
 
-router.post('/contacts',parseExpres, ctrlWrapper(makeNewContControl));
+router.post('/contacts', parseExpres, ctrlWrapper(makeNewContControl));
 
 router.patch('/contacts/:id',parseExpres,  ctrlWrapper(changeContByIdControl));
 
