@@ -39,9 +39,8 @@ async function deleteContByIdControl (req, res){
     if (result === null) {
          throw new createHttpError.NotFound('student not found')
        }
-         res.status(200).json({
-           status: 200,
-         message: `Successfully delete ${contactId}!`,
+         res.status(204).json({
+           status: 204,
          });
 
  

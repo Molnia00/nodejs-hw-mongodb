@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
  
    router.get('/contacts',ctrlWrapper(getContactController) );
      
-   router.get('/contacts/:id', isValidId,ctrlWrapper(getContByIdControl));
+   router.get('/contacts/:id', isValidId, ctrlWrapper(getContByIdControl));
 
 router.delete('/contacts/:id', isValidId, ctrlWrapper(deleteContByIdControl));
 
