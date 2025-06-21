@@ -5,9 +5,19 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema, patchContactSchema } from '../validation/contact.js';
+import authRoutes from './auth.js'
 const router = express.Router();
 
 const parseExpres = express.json();
+//////////////////////////////////////
+router.use('/auth', authRoutes);
+
+
+
+
+
+//////////////////////////////////////
+
 
 router.get('/', (req, res) => {
      res.json({
