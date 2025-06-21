@@ -2,11 +2,19 @@ import createHttpError from 'http-errors';
 import { notFoundHandler } from "../middlewares/notFoundHandler.js";
 import { deleteContById, getAllContacts, getAllContactsByID, makeNewCont, changeContById } from "../services/conFunc.js";
 import { parsePaginationParams } from '../utils/pagination.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+
+
 
 async function getContactController(req, res, next) {
   const { page, perPage } = parsePaginationParams(req.query);
-  console.log({ page, perPage });
-        const contact = await getAllContacts();
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+
+
+
+
+
+        const contact = await getAllContacts({ page, perPage,  sortBy, sortOrder});
         res.status(200).json({
             status: 200,
             message: "Successfully found contacts!",
