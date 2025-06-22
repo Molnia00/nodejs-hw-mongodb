@@ -5,18 +5,11 @@ import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema, patchContactSchema } from '../validation/contact.js';
 import authRoutes from './auth.js'
+import { auth } from '../middlewares/auth.js';
 const router = express.Router();
 
 const parseExpres = express.json();
-//////////////////////////////////////
 router.use('/auth', authRoutes);
-
-
-
-
-
-//////////////////////////////////////
-
 
 router.get('/', (req, res) => {
      res.json({
@@ -24,7 +17,7 @@ router.get('/', (req, res) => {
      });
 });
  
-router.get('/contacts',ctrlWrapper(getContactController) );
+router.get('/contacts',auth, ctrlWrapper(getContactController) );
      
 
 router.get('/contacts/:id', isValidId, ctrlWrapper(getContByIdControl));

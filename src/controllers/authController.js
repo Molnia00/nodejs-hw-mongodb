@@ -32,7 +32,9 @@ export async function loginController(req, res) {
     res.status(200).json({
         status: 200,
         message: "Successfully logged in an user!",
+        data:{
         accessToken: session.accessToken,
+    }
     })
 }
 
@@ -51,7 +53,8 @@ export async function logoutController(req, res) {
 
 export async function refreshController(req, res) {
     const { refreshToken, sessionId } = req.cookies;
-    const session = await refreshUser(refreshToken, sessionId)
+    
+    const session = await refreshUser(sessionId, refreshToken )
 
     res.cookie('sessionId', session._id, {
         httpOnly: true,

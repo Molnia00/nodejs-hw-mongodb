@@ -11,7 +11,7 @@ const parseExpres = express.json();
 router.post('/register', parseExpres, validateBody(createAuthSchema), ctrlWrapper(registerController));
 router.post('/login', parseExpres, validateBody(loginSchema), ctrlWrapper(loginController));
 router.post('/logout', ctrlWrapper(logoutController))
-router.post('/refresh', ctrlWrapper(refreshController))
+router.post('/refresh', ctrlWrapper(refreshController));
 export default router;
 
 
