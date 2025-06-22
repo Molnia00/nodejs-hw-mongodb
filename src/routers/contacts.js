@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.get('/contacts',auth, ctrlWrapper(getContactController) );
      
 
-router.get('/contacts/:id', isValidId, ctrlWrapper(getContByIdControl));
+router.get('/contacts/:id',auth, isValidId, ctrlWrapper(getContByIdControl));
 
 
 router.delete('/contacts/:id', isValidId, ctrlWrapper(deleteContByIdControl));

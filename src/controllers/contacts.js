@@ -28,7 +28,11 @@ async function getContByIdControl (req, res, next){
        if (!contact) {
          throw new createHttpError.NotFound('student not find')
        }
- 
+  if (contact.userId.toString() !== req.user.id.toString()) {
+         throw new createHttpError.NotFound('student not find')
+       }
+  
+  
          res.status(200).json({
            status: 200,
          message: "Successfully found contact!",
