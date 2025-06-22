@@ -1,13 +1,19 @@
 import { Contact } from "../models/contact.js";
 
-export const getAllContacts = async ({ page, perPage,  sortBy, sortOrder }) => {
+export const getAllContacts = async ({ page, perPage,  sortBy, sortOrder, userId}) => {
   const skip = page > 0 ? (page - 1) * perPage : 0;
   
+  const studentQuery = Contact.find();
+  
+  studentQuery.where('userId').equals(userId)
+
 
   const [total, data] = await Promise.all([
     Contact.countDocuments(),
-    Contact.find().sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),
+    studentQuery.sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),
   ])
+
+  
 
   const totalPages = Math.ceil(total / perPage)
 
