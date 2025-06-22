@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-
+import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
 import router from './routers/contacts.js';
@@ -13,6 +13,7 @@ const PORT = Number(getEnvVar('PORT', '8080'));
 export async function setupServer() {
   const app = express();
 
+  app.use(cookieParser())
   app.use(express.json());
   app.use(cors());
   app.use(

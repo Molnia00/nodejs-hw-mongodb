@@ -4,16 +4,16 @@ export const getAllContacts = async ({ page, perPage,  sortBy, sortOrder }) => {
   const skip = page > 0 ? (page - 1) * perPage : 0;
   
 
-  const [total, contacts] = await Promise.all([
+  const [total, data] = await Promise.all([
     Contact.countDocuments(),
     Contact.find().sort({[sortBy]: sortOrder}).skip(skip).limit(perPage),
   ])
 
   const totalPages = Math.ceil(total / perPage)
 
-  console.log({total, contacts})
+  console.log({total, data})
   return {
-       contacts,
+       data,
         page,
         perPage,
         total,

@@ -1,5 +1,4 @@
 import express from 'express';
-import { getAllContacts, getAllContactsByID } from '../services/conFunc.js';
 import { getContactController, getContByIdControl , deleteContByIdControl, makeNewContControl, changeContByIdControl} from '../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';

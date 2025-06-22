@@ -11,9 +11,6 @@ async function getContactController(req, res, next) {
   const { sortBy, sortOrder } = parseSortParams(req.query);
 
 
-
-
-
         const contact = await getAllContacts({ page, perPage,  sortBy, sortOrder});
         res.status(200).json({
             status: 200,
