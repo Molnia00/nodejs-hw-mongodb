@@ -1,5 +1,4 @@
 import createHttpError from 'http-errors';
-import { notFoundHandler } from "../middlewares/notFoundHandler.js";
 import { deleteContById, getAllContacts, getAllContactsByID, makeNewCont, changeContById } from "../services/conFunc.js";
 import { parsePaginationParams } from '../utils/pagination.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
@@ -7,11 +6,12 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 
 
 async function getContactController(req, res, next) {
+  console.log(req.user); //хто зробив запит
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
 
 
-        const contact = await getAllContacts({ page, perPage,  sortBy, sortOrder});
+        const contact = await getAllContacts({ page, perPage,  sortBy, sortOrder, userId: req.user._id});
         res.status(200).json({
             status: 200,
             message: "Successfully found contacts!",
@@ -57,7 +57,8 @@ async function deleteContByIdControl (req, res){
 
 async function makeNewContControl(req, res) { 
     
-    const newContacts = await makeNewCont(req.body);
+  const newContacts = await makeNewCont({ ...req.body, userId: req.user.id });
+
     console.log(newContacts)
     res.status(201).json({
 		status: 201,

@@ -32,7 +32,7 @@ export async function loginUser(email, password) {
 
     const accessToken = crypto.randomBytes(30).toString('base64');
 
-    const refreshToken = crypto.randomBytes(30).toString('base64')
+    const refreshToken = crypto.randomBytes(30).toString('base64');
 
 
     return Session.create({
@@ -69,7 +69,7 @@ export async function refreshUser(sessionId, refreshToken) {
     
 
      return Session.create({
-        userId:session._id ,
+        userId: session.userId,
         accessToken:crypto.randomBytes(30).toString('base64'),
         refreshToken:crypto.randomBytes(30).toString('base64'),
         accessTokenValidUntil:new Date(Date.now() + 15 * 60 * 1000),

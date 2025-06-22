@@ -5,7 +5,7 @@ import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema, patchContactSchema } from '../validation/contact.js';
 import authRoutes from './auth.js'
-import { auth } from '../middlewares/auth.js';
+import { auth } from '../middlewares/authenticate.js';
 const router = express.Router();
 
 const parseExpres = express.json();
@@ -26,7 +26,7 @@ router.get('/contacts/:id', isValidId, ctrlWrapper(getContByIdControl));
 router.delete('/contacts/:id', isValidId, ctrlWrapper(deleteContByIdControl));
 
 
-router.post('/contacts',
+router.post('/contacts',auth,
     parseExpres,
     validateBody(createContactSchema),
     ctrlWrapper(makeNewContControl)
