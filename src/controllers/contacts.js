@@ -14,19 +14,19 @@ async function getContactController(req, res, next) {
     message: "Successfully found contacts!",
     data: contact,
   });
+
 }
 
 async function getContByIdControl (req, res, next){
   const contactId = req.params.id;
   const userId = req.user.id;
-  
+
   const contact = await getAllContactsByID(contactId, userId);
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
   }
-  
-  res.status(200).json({
+    res.status(200).json({
     status: 200,
     message: "Successfully found contact!",
     data: contact
@@ -38,6 +38,7 @@ async function deleteContByIdControl (req, res, next){
   const userId = req.user.id;
   
   const result = await deleteContById(contactId, userId);
+
 
   if (!result) {
     throw createHttpError(404, 'Contact not found');
@@ -55,6 +56,7 @@ async function makeNewContControl(req, res) {
     data: newContacts,
   });
 }
+
 
 async function changeContByIdControl(req, res, next) {
   const contactId = req.params.id;

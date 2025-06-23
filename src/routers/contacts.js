@@ -26,6 +26,7 @@ router.get('/contacts/:id',auth, isValidId, ctrlWrapper(getContByIdControl));
 router.delete('/contacts/:id',auth, isValidId, ctrlWrapper(deleteContByIdControl));
 
 
+
 router.post('/contacts',auth,
     parseExpres,
     validateBody(createContactSchema),
