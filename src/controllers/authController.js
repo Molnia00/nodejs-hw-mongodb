@@ -1,5 +1,5 @@
 
-import { loginUser, logoutUser, refreshUser, registerUser } from "../services/auth.js"
+import { loginUser, logoutUser, refreshUser, registerUser, resetEmailUser } from "../services/auth.js"
 
 export async function registerController(req, res) {
 
@@ -76,4 +76,11 @@ export async function refreshController(req, res) {
             accessToken: session.accessToken,
         }
     })
+}
+
+export async function resetEmailController(req, res) {
+    const { email } = req.body;
+    await resetEmailUser(email);
+    console.log(email);
+    res.end();
 }

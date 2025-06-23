@@ -3,6 +3,8 @@ import { User } from "../models/User.js";
 import bcrypt from 'bcrypt';
 import { Session } from "../models/Session.js";
 import crypto from 'node:crypto';
+import { sendMail } from "../utils/sendMail.js";
+
 
 export async function registerUser(payload) {
     const user = await User.findOne({ email: payload.email });
@@ -75,4 +77,17 @@ export async function refreshUser(sessionId, refreshToken) {
         accessTokenValidUntil:new Date(Date.now() + 15 * 60 * 1000),
         refreshTokenValidUntil:new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     })
+}
+
+export async function resetEmailUser(email) {
+    const user = await User.findOne({ email })
+    if (user === null) {
+        throw new createHttpError.Unauthorized('User not found');
+    }
+
+    await sendMail(
+        user.email,
+        'reset password',
+        `<p>To reset password follow this <a href=''>link</a></p>`,
+    );
 }
