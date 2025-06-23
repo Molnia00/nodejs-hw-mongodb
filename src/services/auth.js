@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { Session } from "../models/Session.js";
 import crypto from 'node:crypto';
 import { sendMail } from "../utils/sendMail.js";
-
+import { Types } from "mongoose";
 
 export async function registerUser(payload) {
     const user = await User.findOne({ email: payload.email });
@@ -48,8 +48,12 @@ export async function loginUser(email, password) {
 
 
 
-export async function logoutUser(sessionId, refreshToken) {
-   await Session.deleteOne({_id : sessionId, refreshToken})
+export async function logoutUser(sessionId) {
+    if (!Types.ObjectId.isValid(sessionId)) {
+        console.error("Invalid sessionId provided for logout:", sessionId);
+        throw new createHttpError.Unauthorized('Invalid session ID format');
+    }
+   await Session.deleteOne({_id : sessionId})
 }
 
 export async function refreshUser(sessionId, refreshToken) {
