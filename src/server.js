@@ -1,3 +1,4 @@
+import path from 'node:path'
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
@@ -12,6 +13,9 @@ const PORT = Number(getEnvVar('PORT', '8080'));
 
 export async function setupServer() {
   const app = express();
+
+  app.use('/avatars', express.static(path.resolve( 'src', 'uploads', 'avatars')))
+
 
   app.use(cookieParser())
   app.use(express.json());
