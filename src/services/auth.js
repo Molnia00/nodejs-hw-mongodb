@@ -117,7 +117,7 @@ export async function resetEmailUser(email) {
 }
 
 export const resetPassword = async (password, token ) => {
-    console.log("token in servuse:", token)
+    
     try {
 
         const decoded = jwt.verify(token, getEnvVar('JWT_SECRET'));

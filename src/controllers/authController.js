@@ -90,7 +90,6 @@ export async function resetEmailController(req, res) {
 export async function resetPasswordController(req, res) {
 
     const { password, token } = req.body;
-    console.log("token in controller:", token)
     await resetPassword(password, token);
     res.json({
        status: 200,
