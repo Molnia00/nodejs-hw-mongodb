@@ -1,3 +1,6 @@
+import * as fs from 'node:fs/promises'
+import multer from "multer";
+import path from 'node:path'
 import createHttpError from 'http-errors';
 import { deleteContById, getAllContacts, getAllContactsByID, makeNewCont, changeContById } from "../services/conFunc.js";
 import { parsePaginationParams } from '../utils/pagination.js';
@@ -46,8 +49,14 @@ async function deleteContByIdControl (req, res, next){
   res.status(204).send();
 }
 
-async function makeNewContControl(req, res) { 
-  const newContacts = await makeNewCont({ ...req.body, userId: req.user.id });
+async function makeNewContControl(req, res) {
+  console.log(req.file);
+  await fs.rename(req.file.path, path.resolve("src", "uploads", "avatars", req.file.filename));
+  const newContacts = await makeNewCont({
+    ...req.body,
+    userId: req.user.id,
+    avatar: req.file.filename
+  });
 
   console.log(newContacts)
   res.status(201).json({
