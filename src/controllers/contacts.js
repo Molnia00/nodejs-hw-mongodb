@@ -1,10 +1,12 @@
 import * as fs from 'node:fs/promises'
-import multer from "multer";
+import multer from 'multer'
 import path from 'node:path'
 import createHttpError from 'http-errors';
 import { deleteContById, getAllContacts, getAllContactsByID, makeNewCont, changeContById } from "../services/conFunc.js";
 import { parsePaginationParams } from '../utils/pagination.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
+import { uploadCloud } from '../utils/uploadToClaudinary.js';
+import {getEnvVar} from '../utils/getEnvVar.js'
 
 async function getContactController(req, res, next) {
   console.log(req.user);
@@ -50,12 +52,27 @@ async function deleteContByIdControl (req, res, next){
 }
 
 async function makeNewContControl(req, res) {
-  console.log(req.file);
-  await fs.rename(req.file.path, path.resolve("src", "uploads", "avatars", req.file.filename));
+
+  let avatar = null;
+
+
+  if (getEnvVar('UPLOAD_TO_CLAUDINARY') === "true") {
+    const result = await uploadCloud(req.file.path);
+
+    await fs.unlink(req.file.path);
+    avatar = result.secure_url;
+  }else{
+    const site = getEnvVar('APP_DOMAIN')
+    await fs.rename(req.file.path, path.resolve("src", "uploads", "avatars", req.file.filename));
+
+    avatar=`http://localhost:8080/avatars/${req.file.filename}`
+  }
+
+;
   const newContacts = await makeNewCont({
     ...req.body,
     userId: req.user.id,
-    avatar: req.file.filename
+    avatar,
   });
 
   console.log(newContacts)
