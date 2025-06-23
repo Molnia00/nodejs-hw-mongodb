@@ -34,7 +34,7 @@ router.post('/contacts',auth,
 );
 
 
-router.patch('/contacts/:id', parseExpres,
+router.patch('/contacts/:id', parseExpres,auth,
     validateBody(patchContactSchema),
     isValidId,
     ctrlWrapper(changeContByIdControl)
