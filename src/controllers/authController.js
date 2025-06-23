@@ -1,5 +1,5 @@
 
-import { loginUser, logoutUser, refreshUser, registerUser, resetEmailUser } from "../services/auth.js"
+import { loginUser, logoutUser, refreshUser, registerUser, resetEmailUser, resetPassword } from "../services/auth.js"
 
 export async function registerController(req, res) {
 
@@ -80,6 +80,21 @@ export async function refreshController(req, res) {
 export async function resetEmailController(req, res) {
     const { email } = req.body;
     await resetEmailUser(email);
-    console.log(email);
-    res.end();
+    res.json({
+       status: 200,
+       message: "Reset password email has been successfully sent.",
+       data: {email}
+   })
+}
+ 
+export async function resetPasswordController(req, res) {
+
+    const { password, token } = req.body;
+    console.log("token in controller:", token)
+    await resetPassword(password, token);
+    res.json({
+       status: 200,
+       message: "Password has been successfully reset.",
+       data: password
+   });
 }

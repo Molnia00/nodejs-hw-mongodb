@@ -19,7 +19,7 @@ export const getAllContacts = async ({ page, perPage,  sortBy, sortOrder, userId
 
   const totalPages = Math.ceil(total / perPage);
 
-  console.log('getAllContacts (service): total =', total);Add commentMore actions
+  console.log('getAllContacts (service): total =', total);
   console.log('getAllContacts (service): data.length =', data.length);
   return {
        data,
@@ -55,3 +55,4 @@ export const changeContById = async (contactId, payload, userId) => {
     { new: true, runValidators: true }
   );
 };
+

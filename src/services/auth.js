@@ -1,3 +1,5 @@
+import * as fs from 'node:fs';
+import path from 'node:path';
 import createHttpError from "http-errors";
 import { User } from "../models/User.js";
 import bcrypt from 'bcrypt';
@@ -5,6 +7,15 @@ import { Session } from "../models/Session.js";
 import crypto from 'node:crypto';
 import { sendMail } from "../utils/sendMail.js";
 import { Types } from "mongoose";
+import Handlebars from "handlebars";
+import jwt from 'jsonwebtoken';
+import {getEnvVar} from '../utils/getEnvVar.js'
+
+
+
+
+const RESET_PASSWORD_TEMLTE = fs.readFileSync(path.resolve('src', "templates", "reset-password.hbs"), "UTF-8");
+console.log(RESET_PASSWORD_TEMLTE)
 
 export async function registerUser(payload) {
     const user = await User.findOne({ email: payload.email });
@@ -83,15 +94,56 @@ export async function refreshUser(sessionId, refreshToken) {
     })
 }
 
+
 export async function resetEmailUser(email) {
     const user = await User.findOne({ email })
     if (user === null) {
         throw new createHttpError.Unauthorized('User not found');
     }
 
+    const template = Handlebars.compile(RESET_PASSWORD_TEMLTE);
+    const token = jwt.sign({
+        sub: user._id,
+        name: user.name
+    }, getEnvVar('JWT_SECRET'),{
+        expiresIn: "5m"
+       });
+
     await sendMail(
         user.email,
         'reset password',
-        `<p>To reset password follow this <a href=''>link</a></p>`,
+        template({link:`http://localhost:3000/reset-password?token=${token}`}),
     );
 }
+
+export const resetPassword = async (password, token ) => {
+    console.log("token in servuse:", token)
+    try {
+
+        const decoded = jwt.verify(token, getEnvVar('JWT_SECRET'));
+        console.log(decoded);
+
+        const user =await User.findOne({ _id: decoded.sub });
+        if (!user) {
+            throw new createHttpError.Unauthorized('User not found');
+            
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await User.findOneAndUpdate({ _id: user._id }, { password: hashedPassword })
+    } catch (error){
+       
+        if (error.name === "JsonWebTokenError") {
+            throw new createHttpError.Unauthorized("Token is unauthorized");
+        }
+
+        if (error.name === "TokenExpiredError") {
+            throw new createHttpError.Unauthorized("Token is expired");
+        }
+        throw error;
+
+    }
+}
+
+
+
+
