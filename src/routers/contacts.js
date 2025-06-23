@@ -39,7 +39,7 @@ router.post(
 );
 
 
-router.patch('/contacts/:id', parseExpres,
+router.patch('/contacts/:id', auth, parseExpres,
     validateBody(patchContactSchema),
     isValidId,
     ctrlWrapper(changeContByIdControl)
