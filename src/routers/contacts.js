@@ -23,7 +23,7 @@ router.get('/contacts',auth, ctrlWrapper(getContactController) );
 router.get('/contacts/:id',auth, isValidId, ctrlWrapper(getContByIdControl));
 
 
-router.delete('/contacts/:id', isValidId, ctrlWrapper(deleteContByIdControl));
+router.delete('/contacts/:id',auth, isValidId, ctrlWrapper(deleteContByIdControl));
 
 
 router.post('/contacts',auth,
