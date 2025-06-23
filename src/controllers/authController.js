@@ -40,13 +40,12 @@ export async function loginController(req, res) {
 
 
 export async function logoutController(req, res) {
-    const { refreshToken, sessionId } = req.cookies;
+    const { sessionId } = req.cookies;
     if (typeof sessionId === 'string') {
-        await logoutUser(refreshToken, sessionId)
+        await logoutUser(sessionId)
     }
 
     res.clearCookie('sessionId')
-    res.clearCookie('refreshToken')
 
     res.status(204).end();
 }
