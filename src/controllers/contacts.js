@@ -53,26 +53,12 @@ async function deleteContByIdControl (req, res, next){
 
 async function makeNewContControl(req, res) {
 
-  let avatar = null;
-
-
-  if (getEnvVar('UPLOAD_TO_CLAUDINARY') === "true") {
     const result = await uploadCloud(req.file.path);
 
-    await fs.unlink(req.file.path);
-    avatar = result.secure_url;
-  }else{
-    const site = getEnvVar('APP_DOMAIN')
-    await fs.rename(req.file.path, path.resolve("src", "uploads", "avatars", req.file.filename));
-
-    avatar=`http://localhost:8080/avatars/${req.file.filename}`
-  }
-
-;
   const newContacts = await makeNewCont({
     ...req.body,
     userId: req.user.id,
-    avatar,
+    photo: result,
   });
 
   console.log(newContacts)
@@ -89,11 +75,21 @@ async function changeContByIdControl(req, res, next) {
   const userId = req.user.id;
   const payload = req.body;
 
+  if (req.file) {
+    try {
+      const photoUrl = await uploadCloud(req.file.path);
+      payload.photo = photoUrl;
+    } catch (error) {
+      return next(createHttpError(500, 'Error uploading photo: ' + error.message));
+    }
+  }
+
   const result = await changeContById(contactId, payload, userId);
 
   if (!result) {
     throw createHttpError(404, 'Contact not found');
   }
+
   res.status(200).json({
     status: 200,
     message: "Successfully patched a contact!",
