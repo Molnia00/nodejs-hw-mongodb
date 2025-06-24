@@ -1,0 +1,95 @@
+#/swagger/paths/students/post.yaml
+
+tags:
+  - Contacts
+summary: Update contact by id
+operationId: updateContact
+description: 'Update contact by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '671f66a2c1889554f6956e54'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: '+380505853236'
+          email:
+            description: "Contact's email"
+            type: string
+            example: user@email.com
+          contactType:
+            description: 'Type of contact'
+            type: string
+            enum: ['work', 'home', 'personal']
+          photo:
+            description: "Contact's avatar"
+            type: string
+            format: binary
+          isFavourite:
+            description: 'Is contact favorite'
+            type: boolean
+            example: false
+
+responses:
+  '201':
+    description: Create a contact
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contsct!
+            data:
+              type: object
+              $ref: ../../components/schemas/contact.yaml
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    description: 'Not found error'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: number
+              example: 404
+            message:
+              type: string
+              example: 'NotFound'
+            data:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  example: 'Contact not found'

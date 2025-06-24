@@ -21,6 +21,10 @@ router.post('/send-reset-email', parseExpres, validateBody(resetEmailSchema), ct
 router.post('/reset-pwd',parseExpres,validateBody(resetPasswordSchema),ctrlWrapper(resetPasswordController) )
 
 
+
+
+
+
 export default router;
 
 

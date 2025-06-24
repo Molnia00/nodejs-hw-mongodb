@@ -1,6 +1,5 @@
 
 import { loginUser, logoutUser, refreshUser, registerUser, resetEmailUser, resetPassword } from "../services/auth.js"
-
 export async function registerController(req, res) {
 
     const User = await registerUser(req.body);
@@ -97,3 +96,12 @@ export async function resetPasswordController(req, res) {
        data: password
    });
 }
+
+
+
+
+
+
+
+
+
