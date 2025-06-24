@@ -9,7 +9,6 @@ import { auth } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/uploud.js';
 
 
-
 const router = express.Router();
 
 const parseExpres = express.json();
@@ -32,14 +31,14 @@ router.delete('/contacts/:id',auth, isValidId, ctrlWrapper(deleteContByIdControl
 
 router.post(
     '/contacts',
-    upload.single('avatar'),auth,
+    upload.single('photo'),auth,
     parseExpres,
     validateBody(createContactSchema),
     ctrlWrapper(makeNewContControl)
 );
 
 
-router.patch('/contacts/:id', auth, parseExpres,
+router.patch('/contacts/:id',upload.single('photo'), auth, parseExpres,
     validateBody(patchContactSchema),
     isValidId,
     ctrlWrapper(changeContByIdControl)
@@ -47,4 +46,3 @@ router.patch('/contacts/:id', auth, parseExpres,
 
 
 export default router;
-
