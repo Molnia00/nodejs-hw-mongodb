@@ -11,7 +11,7 @@ tags:
     description: Operations about users.
 
 servers:
-  - url: http://127.0.0.1:8080/
+  - url: https://nodejs-hw-mongodb-4yp1.onrender.com/.
 
 paths:
   /contacts/{id}:
