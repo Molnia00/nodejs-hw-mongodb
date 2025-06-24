@@ -8,12 +8,22 @@ import { initMongoConnection } from './db/initMongoConnection.js';
 import router from './routers/contacts.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { swaggerDocs } from './utils/swaggerDocs.js';
+
+
+
+
+
+
+
+
+
 
 const PORT = Number(getEnvVar('PORT', '8080'));
 
 export async function setupServer() {
   const app = express();
-
+  app.use('/api-docs', swaggerDocs());
   app.use('/avatars', express.static(path.resolve( 'src', 'uploads', 'avatars')))
 
 
