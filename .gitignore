@@ -3,7 +3,7 @@
 .env
 
 src/uploads/avatars*
-!src/tmp/gitkeep
+!src/uploads/gitkeep
 
 src/tmp/*
 !src/tmp/gitkeep
