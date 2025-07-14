@@ -5,8 +5,7 @@
 src/uploads/avatars*
 !src/uploads/gitkeep
 
-src/tmp/*
-!src/tmp/gitkeep
+
 
 .vscode
 .DS_Store

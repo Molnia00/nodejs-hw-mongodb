@@ -6,7 +6,7 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema, patchContactSchema } from '../validation/contact.js';
 import authRoutes from './auth.js'
 import { auth } from '../middlewares/authenticate.js';
-import { upload } from '../middlewares/uploud.js';
+import { upload }  from '../middlewares/uploud.js';
 
 
 const router = express.Router();
@@ -30,15 +30,17 @@ router.delete('/contacts/:id',auth, isValidId, ctrlWrapper(deleteContByIdControl
 
 
 router.post(
-    '/contacts',
-    upload.single('photo'),auth,
-    parseExpres,
+  '/contacts',
+  auth,
+  upload.single('photo'),
     validateBody(createContactSchema),
     ctrlWrapper(makeNewContControl)
 );
 
 
-router.patch('/contacts/:id',upload.single('photo'), auth, parseExpres,
+router.patch('/contacts/:id',
+  auth,
+  upload.single('photo'),
     validateBody(patchContactSchema),
     isValidId,
     ctrlWrapper(changeContByIdControl)

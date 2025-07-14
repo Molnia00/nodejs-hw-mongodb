@@ -51,22 +51,33 @@ async function deleteContByIdControl (req, res, next){
   res.status(204).send();
 }
 
-async function makeNewContControl(req, res) {
 
-    const result = await uploadCloud(req.file.path);
+async function makeNewContControl(req, res, next) {
+  try {
+    console.log('req.file:', req.file); 
 
-  const newContacts = await makeNewCont({
-    ...req.body,
-    userId: req.user.id,
-    photo: result,
-  });
+    let photoUrl = null; 
 
-  console.log(newContacts)
-  res.status(201).json({
-    status: 201,
-    message: "Successfully created a contact!",
-    data: newContacts,
-  });
+    if (req.file) {
+      console.log("Файл знайдено, завантажуємо в Cloudinary...");
+      photoUrl = await uploadCloud(req.file);
+    } else {
+      console.log("Файл не передано ");
+    }
+
+    const newContact = {
+      ...req.body, 
+      photo: photoUrl,
+      userId: req.user._id, 
+    };
+
+
+    res.status(201).json({ status: 201, message: 'Successfully created a contact!', data: newContact });
+
+  } catch (error) {
+    console.error('Помилка у makeNewContControl:', error);
+    next(error);
+  }
 }
 
 
