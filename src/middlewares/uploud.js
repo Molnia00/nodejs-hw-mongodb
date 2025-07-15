@@ -1,16 +1,18 @@
-import path from 'node:path';
 import multer from 'multer';
+import path from 'node:path';
 
-const storage = multer.memoryStorage({
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'src', 'tmp');
+
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.resolve('src', "tmp"));
+    cb(null, TEMP_UPLOAD_DIR);
   },
   filename: function (req, file, cb) {
-    const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniquePrefix + '-' + file.originalname);
-  }
+    const uniqueSuffix = Date.now();
+    cb(null, `${uniqueSuffix}_${file.originalname}`);
+  },
 });
 
 const upload = multer({ storage });
- 
-export {upload}
+
+export { upload };

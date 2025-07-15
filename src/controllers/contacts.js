@@ -81,18 +81,28 @@ async function makeNewContControl(req, res, next) {
 }
 
 
+
+
 async function changeContByIdControl(req, res, next) {
   const contactId = req.params.id;
   const userId = req.user.id;
   const payload = req.body;
 
   if (req.file) {
+    if (!req.file.path) {
+      return next(createHttpError(400, 'Не вдалося обробити файл: відсутній шлях.'));
+    }
+
     try {
       const photoUrl = await uploadCloud(req.file.path);
       payload.photo = photoUrl;
     } catch (error) {
-      return next(createHttpError(500, 'Error uploading photo: ' + error.message));
+      return next(createHttpError(500, 'Помилка завантаження фото: ' + error.message));
     }
+  } else {
+      if (payload.photo === null) {
+      } else if (!payload.photo) {
+      }
   }
 
   const result = await changeContById(contactId, payload, userId);
@@ -107,7 +117,6 @@ async function changeContByIdControl(req, res, next) {
     data: result,
   });
 }
-
 export {
   getContByIdControl,
   getContactController,
