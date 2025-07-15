@@ -54,13 +54,13 @@ async function deleteContByIdControl (req, res, next){
 
 async function makeNewContControl(req, res, next) {
   try {
-    console.log('req.file:', req.file); 
+    console.log('req.file:', req.file.path); 
 
     let photoUrl = null; 
 
     if (req.file) {
       console.log("Файл знайдено, завантажуємо в Cloudinary...");
-      photoUrl = await uploadCloud(req.file);
+      photoUrl = await uploadCloud(req.file.path);
     } else {
       console.log("Файл не передано ");
     }
