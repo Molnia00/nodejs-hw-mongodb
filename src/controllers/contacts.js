@@ -54,7 +54,7 @@ async function deleteContByIdControl (req, res, next){
 
 async function makeNewContControl(req, res, next) {
   try {
-    console.log('req.file:', req.file.path); 
+    
 
     let photoUrl = null; 
 
@@ -68,7 +68,7 @@ async function makeNewContControl(req, res, next) {
     const newContact = {
       ...req.body, 
       photo: photoUrl,
-      userId: req.user._id, 
+      userId: req.user.id, 
     };
 
     const makeNewContacts = await makeNewCont(newContact);
