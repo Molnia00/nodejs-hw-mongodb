@@ -73,7 +73,7 @@ async function makeNewContControl(req, res, next) {
 
     const makeNewContacts = await makeNewCont(newContact);
 
-    res.status(201).json({ status: 201, message: 'Successfully created a contact!', data: newContact });
+    res.status(201).json({ status: 201, message: 'Successfully created a contact!', data: makeNewContacts });
 
   } catch (error) {
     console.error('Помилка у makeNewContControl:', error);
